@@ -1,22 +1,31 @@
 import { series } from './data.js';
 var seriesTable = document.getElementById("series");
+var promedioTemporadasElement = document.getElementById("promedioTemporadas");
+var seriesInfo = document.getElementById('seriesInfo');
 mostrarTablaSeries(series);
+promedioTemporadasElement.innerHTML = "<b>Seasons average:</b> ".concat(promedio(series));
 function mostrarTablaSeries(datosSeries) {
     var seriesTbody = document.createElement("tbody");
-    for (var _i = 0, datosSeries_1 = datosSeries; _i < datosSeries_1.length; _i++) {
-        var serie = datosSeries_1[_i];
+    var _loop_1 = function (serie) {
         var trElement = document.createElement("tr");
+        trElement.addEventListener("click", function () { return mostrarInfo(serie); });
         trElement.classList.add("table-light");
         trElement.innerHTML = "<td>".concat(serie.id, "</td>\n            <td>").concat(serie.nombre, "</td>\n            <td>").concat(serie.canal, "</td>\n            <td>").concat(serie.temporadas, "</td>");
         seriesTbody.appendChild(trElement);
+    };
+    for (var _i = 0, datosSeries_1 = datosSeries; _i < datosSeries_1.length; _i++) {
+        var serie = datosSeries_1[_i];
+        _loop_1(serie);
     }
     seriesTable.appendChild(seriesTbody);
 }
-//function average of seasons
-function average(series) {
+function promedio(series) {
     var sum = 0;
     series.forEach(function (serie) {
         sum += serie.temporadas;
     });
     return sum / series.length;
+}
+function mostrarInfo(serie) {
+    seriesInfo.innerHTML = "\n        <div class=\"card\" style=\"width: 19rem;\">\n        <img class=\"card-img-top\" src=\"".concat(serie.imagen, "\"  height: auto;\">\n            <div class=\"card-body\">\n                <h1 class=\"card-title\" style=\"font-size:larger\">").concat(serie.nombre, "</h1>   \n                <p>").concat(serie.descripcion, "</p>\n                <p> <a href=\"").concat(serie.link, "\" target=\"_blank\">").concat(serie.link, "</a></p>\n            </div>\n        </div>\n    ");
 }
